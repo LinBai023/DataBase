@@ -5,7 +5,7 @@ import copy
 
 class CSVDataTable:
 
-    data_dir = '/Users/zs/PycharmProjects/data/'
+    data_dir = '/Users/zs/4111/DataBase/'
 
 # initialize the class
     def __init__(self, t_name, t_file, key_column):
