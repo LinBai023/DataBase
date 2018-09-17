@@ -5,7 +5,7 @@ import copy
 
 class CSVDataTable:
 
-    data_dir = '/Users/zs/PycharmProjects/data/'
+    data_dir = '/Users/zs/4111/DataBase/'
 
 # initialize the class
     def __init__(self, t_name, t_file, key_column):
@@ -94,19 +94,22 @@ class CSVDataTable:
             del(r)
 
     def save(self):
-
-
-
+        with open(self.data_dir+'short.csv', 'w',) as csvfile:
+            fieldnames=[clo for clo in self.columns]
+            writer=csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in self.rows:
+                writer.writerow(row)
 
 
 # save the new table
 # write the dictionary files into csv files
 
 
-csvt = CSVDataTable("People", "short.csv", ['playerID'])
+csvt = CSVDataTable("People", "People.csv", ['playerID'])
 csvt.load()
 csvt.insert({'playerID': 'Me', 'birthYear': '1996', 'birthMonth': '2', 'birthDay': '5', 'birthCountry': 'USA', 'birthState': 'AL', 'birthCity': 'Mobile', 'deathYear': '1984', 'deathMonth': '8', 'deathDay': '16', 'deathCountry':'USA', 'deathState': 'GA', 'deathCity': 'Atlanta', 'nameFirst': 'Tommie', 'nameLast': 'Aaron', 'nameGiven': 'Tommie Lee', 'weight': '190', 'height': '75', 'bats': 'R', 'throws': 'R', 'debut': '1962-04-10', 'finalGame': '1971-09-26', 'retroID': 'aarot101', 'bbrefID': 'aaronto01'})
-#csvt.save()
+csvt.save()
 print("Table=\n", csvt)
 
 
