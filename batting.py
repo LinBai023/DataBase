@@ -24,5 +24,7 @@ res4['H/AB'] = res4.H / res4.AB
 #print(res4)
 res5=res4.sort_values(['H/AB'], ascending=[False])
 print(res5)
+res6=pd.merge(res5, df_people, how='inner', on='playerID')
+print(res6)
 
 
