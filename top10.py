@@ -19,6 +19,7 @@ class CSVDataTable:
         self.dic={}
         self.new_dic={}
         self.new_dic2={}
+        self.nameset=set()
 
 # read the csv file as dictionary
 
@@ -50,16 +51,17 @@ class CSVDataTable:
 
     def delete(self):
         for row in self.rows:
-            if int(row['yearID']) < 1960:
-                del row
+            if int(row['yearID']) >= 1960:
+                self.nameset.add(row['playerID'])
 
     def mapping(self):
         for row in self.rows:
-            if row['playerID'] in self.dic.keys():
+            if row['playerID'] in self.nameset and row['playerID'] in self.dic.keys():
                 self.dic[row['playerID']][0]+= int(row['AB'])
                 self.dic[row['playerID']][1]+= int(row['H'])
-            else:
+            elif row['playerID'] in self.nameset and row['playerID'] not in self.dic.keys():
                 self.dic[row['playerID']]=[int(row['AB']), int(row['H'])]
+
 
     def select(self):
         for k in self.dic.keys():
