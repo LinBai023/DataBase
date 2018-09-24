@@ -3,6 +3,7 @@ from collections import defaultdict
 import csv
 import json
 import copy
+import pprint
 
 
 class CSVDataTable:
@@ -85,5 +86,5 @@ csvt.mapping()
 csvt.select()
 csvt.calculation()
 csvt.sort()
-print(csvt.sort())
+pprint.pprint(csvt.sort())
 

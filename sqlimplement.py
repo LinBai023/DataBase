@@ -62,10 +62,26 @@ class RDBDataTable:
         print("Query = ", q)
         cursor.execute(q);
         r = cursor.fetchall()
-        #print("Query result = ", r)
         return r
 
-#def insert(self, row):
+    def insert(self, row):
+        try:
+            keys = "(" + ",".join(list(row.keys())) + ") "
+            values = "("
+            for k in row.keys():
+                values += "'" + row[k] + "'" + ","
+            values = values[0:-1] + ")"
+            q = "insert into " + self.t_file + " " + keys + " " + "values" + values
+            print("Q = ", q)
+            cursor = self.cnx.cursor()
+            cursor.execute(q)
+            q2 = "select row_count() as count"
+            cursor.execute(q2)
+            f = cursor.fetchone()
+            print("DB inserted", f)
+            self.cnx.commit()
+        except pymysql.err.IntegrityError:
+            print("What part of unique was not clear.")
 
 
 
@@ -80,7 +96,21 @@ def DBRunQuery(q):
     '''
 
 
+'''
+def test01:
+    rdt = RDBDataTable("Foo", "Batting", ['playerID', 'teamID'])
+    result = rdt.find_by_primary_key([['willite01', 'BOS'] , ['allisar01','CL1']])
+    print("Result = ", json.dumps(result, indent=3))
 
-rdt = RDBDataTable("Foo", "Batting", ['playerID', 'teamID'])
-result = rdt.find_by_primary_key([['willite01', 'BOS'],['allisar01','CL1']])
-print("Result = ", json.dumps(result, indent=3))
+
+'''
+def test02():
+    rdt = RDBDataTable("Foo", "Batting", ['playerID', 'teamID', 'yearID', 'stint'])
+    result = rdt.find_by_primary_key([['willite01', 'BOS', '1960', '1']])
+    print("Result = ", json.dumps(result, indent=3))
+
+def test03():
+    rdt = RDBDataTable("Foo", "People", ['playerID', 'teamID'])
+    print(rdt.insert({'playerID': 'Me','birthYear': '1996', 'birthMonth': '2', 'birthDay': '5', 'birthCountry': 'USA', 'birthState': 'AL', 'birthCity': 'Mobile', 'deathYear': '1984', 'deathMonth': '8', 'deathDay': '16', 'deathCountry':'USA', 'deathState': 'GA', 'deathCity': 'Atlanta', 'nameFirst': 'Tommie', 'nameLast': 'Aaron', 'nameGiven': 'Tommie Lee', 'weight': '190', 'height': '75', 'bats': 'R', 'throws': 'R', 'debut': '1962-04-10', 'finalGame': '1971-09-26', 'retroID': 'aarot101', 'bbrefID': 'aaronto01'}))
+
+test03()

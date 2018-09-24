@@ -1,7 +1,7 @@
 import csv
 import json
 import copy
-
+import collections
 
 class CSVDataTable:
 
@@ -79,7 +79,7 @@ class CSVDataTable:
 
     def insert(self, dict):
         if not self.check_in_table(dict):
-            self.rows.append(dict)
+            self.rows.append(collections.OrderedDict(dict))
 
     def check_in_table(self, dict):
         for r in self.rows:
@@ -105,12 +105,33 @@ class CSVDataTable:
 # save the new table
 # write the dictionary files into csv files
 
+def test1():
+    csvt = CSVDataTable("People", "People.csv", ['playerID'])
+    csvt.load()
+    print("Table = \n", csvt)
 
-csvt = CSVDataTable("People", "People.csv", ['playerID'])
-csvt.load()
-csvt.insert({'playerID': 'Me', 'birthYear': '1996', 'birthMonth': '2', 'birthDay': '5', 'birthCountry': 'USA', 'birthState': 'AL', 'birthCity': 'Mobile', 'deathYear': '1984', 'deathMonth': '8', 'deathDay': '16', 'deathCountry':'USA', 'deathState': 'GA', 'deathCity': 'Atlanta', 'nameFirst': 'Tommie', 'nameLast': 'Aaron', 'nameGiven': 'Tommie Lee', 'weight': '190', 'height': '75', 'bats': 'R', 'throws': 'R', 'debut': '1962-04-10', 'finalGame': '1971-09-26', 'retroID': 'aarot101', 'bbrefID': 'aaronto01'})
-csvt.save()
-print("Table=\n", csvt)
+def test2():
+    csvt = CSVDataTable("People", "People.csv", ['playerID'])
+    csvt.load()
+    #print("Table = \n", csvt)
+    r = csvt.find_by_template({"throws": "L"}, ['nameLast', 'nameFirst', 'playerID'])
+    print(json.dumps(r, indent=3))
+
+def test3():
+    csvt = CSVDataTable("People", "People.csv", ['playerID'])
+    csvt.load()
+    #print("Table = \n", csvt)
+    r = csvt.find_by_primary_key(['abadfe01'], ['nameLast', 'nameFirst', 'playerID'])
+    print("Result = ", json.dumps(r, indent=2))
+
+def test4():
+    csvt = CSVDataTable("People", "People.csv", ['playerID'])
+    csvt.load()
+    csvt.insert({'playerID': 'Me', 'birthYear': '1996', 'birthMonth': '2', 'birthDay': '5', 'birthCountry': 'USA', 'birthState': 'AL', 'birthCity': 'Mobile', 'deathYear': '1984', 'deathMonth': '8', 'deathDay': '16', 'deathCountry':'USA', 'deathState': 'GA', 'deathCity': 'Atlanta', 'nameFirst': 'Tommie', 'nameLast': 'Aaron', 'nameGiven': 'Tommie Lee', 'weight': '190', 'height': '75', 'bats': 'R', 'throws': 'R', 'debut': '1962-04-10', 'finalGame': '1971-09-26', 'retroID': 'aarot101', 'bbrefID': 'aaronto01'})
+    csvt.save()
+    print("Table=\n", csvt)
+
+test4()
 
 
 
